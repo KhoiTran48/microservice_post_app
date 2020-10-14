@@ -1,0 +1,12 @@
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: post-pod-name
+spec:
+  containers:
+    - name: post-1-container-name
+      image: khoi/post:0.0.1
+    - name: post-2-container-name
+      image: khoi/post:0.0.1
+      

@@ -1,0 +1,65 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      # run skaffold -> apply all files
+      # file changed -> apply file
+      # off skaffold -> delete object( deployment, service,...) related config files
+      - ./infra/k8s/*
+build:
+  local:
+    # no auto push to docker hub when re-build image
+    push: false
+  artifacts:
+    - image: 171195/client
+      # watch client directory
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          # file js trong src thay đổi thì sẽ copy sự thay đổi đó vào pod -> ko cần rebuild image
+          # nếu có sự thay đổi nào khác( install new package -> package.json) -> rebuild image 171195/client
+          - src: 'src/**/*.js'
+            dest: .
+    - image: 171195/comment
+      context: comments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: 171195/event-bus
+      context: event-bus
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: 171195/moderation
+      context: moderation
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: 171195/post
+      context: posts
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: 171195/query
+      context: query
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .

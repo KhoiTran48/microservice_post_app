@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: post-srv
+spec:
+  type: NodePort
+  selector:
+    # tên này giống như label bên deployment config
+    app: post
+  ports:
+    - name: post
+      protocol: TCP
+      # đây là node port service
+      port: 4000
+      # đây là port của post service
+      targetPort: 4000
